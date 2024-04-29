@@ -8,21 +8,23 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
+import useTokenStore from "@/store";
 import { Label } from "@radix-ui/react-label";
 import { useMutation } from "@tanstack/react-query";
-import { Divide, Loader, User } from "lucide-react";
+import { Loader, User } from "lucide-react";
 import { useRef } from "react";
 import { Link, useNavigate } from "react-router-dom";
 
 const RegisterPage = () => {
   const navigate = useNavigate();
+  const setToken = useTokenStore((state) => state.setToken);
   const nameRef = useRef<HTMLInputElement>(null);
   const emailRef = useRef<HTMLInputElement>(null);
   const passwordRef = useRef<HTMLInputElement>(null);
   const mutation = useMutation({
     mutationFn: register,
-    onSuccess: () => {
-      console.log("signup successful");
+    onSuccess: (response) => {
+      setToken(response.data.accessToken);
       navigate("/dashboard/home");
     },
   });
