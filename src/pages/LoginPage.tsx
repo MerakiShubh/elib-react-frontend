@@ -13,7 +13,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { useRef } from "react";
 import { useMutation } from "@tanstack/react-query";
 import { login } from "@/HTTP/api";
-import { Loader } from "lucide-react";
+import { Loader, ShieldAlert } from "lucide-react";
 
 const LoginPage = () => {
   const navigate = useNavigate();
@@ -46,7 +46,14 @@ const LoginPage = () => {
         <CardHeader>
           <CardTitle className="text-2xl">Login</CardTitle>
           <CardDescription>
-            Enter your email below to login to your account.
+            {mutation.isError ? (
+              <span className="flex text-red-500">
+                <ShieldAlert />
+                Error occured
+              </span>
+            ) : (
+              <div>Enter your email below to login to your account.</div>
+            )}
           </CardDescription>
         </CardHeader>
         <CardContent className="grid gap-4">
