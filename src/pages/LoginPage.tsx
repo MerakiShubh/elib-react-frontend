@@ -9,18 +9,33 @@ import {
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useRef } from "react";
+import { useMutation } from "@tanstack/react-query";
+import { login } from "@/HTTP/api";
 
 const LoginPage = () => {
+  const navigate = useNavigate();
   const emailRef = useRef<HTMLInputElement>(null);
   const passwordRef = useRef<HTMLInputElement>(null);
+  const mutation = useMutation({
+    mutationFn: login,
+    onSuccess: () => {
+      console.log("Login successful");
+      navigate("/dashboard/home");
+    },
+  });
+
   const handleLoginSubmit = () => {
     const email = emailRef.current?.value;
     const password = passwordRef.current?.value;
-    console.log("Data", { email, password });
-    //make server call
+    console.log("data", { email, password });
+    if (!email || !password) {
+      return alert("Please enter email and password");
+    }
+    mutation.mutate({ email, password });
   };
+
   return (
     <section
       className="flex justify-center items-center
