@@ -34,7 +34,7 @@ import {
   DropdownMenuLabel,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { CirclePlus, MoreHorizontal } from "lucide-react";
+import { CirclePlus, Loader, MoreHorizontal } from "lucide-react";
 import { Link } from "react-router-dom";
 // todo: add loading, spinner and error message
 const BooksPage = () => {
@@ -43,6 +43,29 @@ const BooksPage = () => {
     queryFn: getBooks,
     staleTime: 10000,
   });
+  if (isLoading) {
+    return (
+      <div className="flex items-center justify-center min-h-screen">
+        <div className="text-center">
+          <Loader className="animate-spin w-8 h-8 mx-auto" />
+          <p>Loading...</p>
+        </div>
+      </div>
+    );
+  }
+
+  if (isError) {
+    return (
+      <div className="flex items-center justify-center min-h-screen">
+        <div className="text-center">
+          <p className="text-red-500">
+            An error occurred while fetching the data.
+          </p>
+        </div>
+      </div>
+    );
+  }
+
   console.log("Data", data?.data?.docs);
   return (
     <>
